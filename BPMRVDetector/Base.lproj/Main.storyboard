@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -12,7 +13,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="BPMDetectVerify" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="BPMRVDetector" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -25,19 +26,25 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BPM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vpA-YZ-XsR" userLabel="BpmLabel">
-                                <rect key="frame" x="169" y="409.5" width="36" height="21"/>
+                                <rect key="frame" x="169.5" y="409.5" width="36" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RythmicValue" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bKj-kb-T3U" userLabel="RVLabel">
-                                <rect key="frame" x="135" y="450.5" width="104" height="21"/>
+                                <rect key="frame" x="135.5" y="450.5" width="104" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SongName" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vbw-H3-kTt" userLabel="SongNameLabel">
                                 <rect key="frame" x="145" y="368.5" width="85" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Progress: 0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="krM-JH-1QG" userLabel="ProgressLabel">
+                                <rect key="frame" x="143.5" y="491.5" width="88" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -50,14 +57,17 @@
                             <constraint firstItem="bKj-kb-T3U" firstAttribute="top" secondItem="vpA-YZ-XsR" secondAttribute="bottom" constant="20" id="8wW-dm-v4f"/>
                             <constraint firstItem="vpA-YZ-XsR" firstAttribute="top" secondItem="Vbw-H3-kTt" secondAttribute="bottom" constant="20" id="9nI-EB-4xO"/>
                             <constraint firstItem="cQF-xr-7Jq" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Ggf-XA-dA3"/>
+                            <constraint firstItem="krM-JH-1QG" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="IYb-Hh-CBQ"/>
                             <constraint firstItem="cQF-xr-7Jq" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Wjf-0P-nAv"/>
                             <constraint firstItem="bKj-kb-T3U" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="jq7-SK-mR1"/>
+                            <constraint firstItem="krM-JH-1QG" firstAttribute="top" secondItem="bKj-kb-T3U" secondAttribute="bottom" constant="20" id="sHU-aj-vWi"/>
                             <constraint firstItem="Vbw-H3-kTt" firstAttribute="top" secondItem="cQF-xr-7Jq" secondAttribute="bottom" constant="20" id="vpF-qq-1UJ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="bpmLabel" destination="vpA-YZ-XsR" id="bc7-fT-nbT"/>
+                        <outlet property="progressLabel" destination="krM-JH-1QG" id="xeS-vP-lUE"/>
                         <outlet property="rvLabel" destination="bKj-kb-T3U" id="KHB-9z-7FG"/>
                         <outlet property="songNameLabel" destination="Vbw-H3-kTt" id="WYK-ND-b9k"/>
                     </connections>

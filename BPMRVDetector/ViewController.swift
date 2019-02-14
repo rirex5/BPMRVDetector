@@ -14,18 +14,55 @@ class ViewController: UIViewController, MPMediaPickerControllerDelegate {
     @IBOutlet weak var songNameLabel: UILabel!
     @IBOutlet weak var bpmLabel: UILabel!
     @IBOutlet weak var rvLabel: UILabel!
+    @IBOutlet weak var progressLabel: UILabel!
     
+    let csvService = CSVService()
+    var csvData = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        initialize()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
+    func initialize() {
+        csvData = "Name, Artist, Album, Genre, Time, BPM, RV"
+        let query = MPMediaQuery.songs()
+        
+        let items = query.items!
+        // 非同期処理内の一部のみ同期処理にする
+        DispatchQueue.global(qos: .default).async {
+            
+            var i = 0
+            for item in items {
+                if let url: URL = item.assetURL {
+                    let result = self.bpmDetector(url: url)
+                    
+                    let data = "\n\(item.title ?? ""),\(item.artist ?? ""),\(item.albumTitle ?? ""),\(item.genre ?? ""),\(item.playbackDuration),\(result.bpm),\(result.rv)"
+                    self.csvData += data
+                    print(data)
+                    DispatchQueue.main.async {
+                        self.songNameLabel.text = item.title
+                        self.bpmLabel.text = "BPM: \(result.bpm)"
+                        self.rvLabel.text = "RythmicValue: \(result.rv)"
+                        self.progressLabel.text = "Progress: " + String(i)
+                    }
+                }
+                i += 1
+            }
+            self.csvService.saveCSV(dataStr: self.csvData)
+            DispatchQueue.main.async {
+                self.progressLabel.text = "Progress: Complete!"
+            }
+        }
+        
+    }
+    
     /**
      * 楽曲を選択
      * 楽曲のBPM, RV(Rhythmic Value)を取得
@@ -57,7 +94,7 @@ class ViewController: UIViewController, MPMediaPickerControllerDelegate {
         
         let item = items[0] // 先頭のMPMediaItemを取得し、そのassetURLからプレイヤーを作成する
         if let url: URL = item.assetURL {
-           let result = bpmDetector(url: url)
+            let result = bpmDetector(url: url)
             songNameLabel.text = item.title
             bpmLabel.text = "BPM: \(result.bpm)"
             rvLabel.text = "RythmicValue: \(result.rv)"
@@ -75,6 +112,6 @@ class ViewController: UIViewController, MPMediaPickerControllerDelegate {
         
         return (detectedValue.bpm, detectedValue.rv)
     }
-
+    
 }
 

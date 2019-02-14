@@ -13,6 +13,7 @@
 		3D7136181F7E1A170061EE94 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3D7136171F7E1A170061EE94 /* Assets.xcassets */; };
 		3D71361B1F7E1A170061EE94 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D7136191F7E1A170061EE94 /* LaunchScreen.storyboard */; };
 		3D7136231F7E2BFA0061EE94 /* BpmDetectService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7136221F7E2BFA0061EE94 /* BpmDetectService.swift */; };
+		3DCEC5B422158AF600E494CF /* CSVService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCEC5B322158AF600E494CF /* CSVService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		3D71361A1F7E1A170061EE94 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3D71361C1F7E1A170061EE94 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3D7136221F7E2BFA0061EE94 /* BpmDetectService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BpmDetectService.swift; sourceTree = "<group>"; };
+		3DCEC5B322158AF600E494CF /* CSVService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				3D7136191F7E1A170061EE94 /* LaunchScreen.storyboard */,
 				3D71361C1F7E1A170061EE94 /* Info.plist */,
 				3D7136221F7E2BFA0061EE94 /* BpmDetectService.swift */,
+				3DCEC5B322158AF600E494CF /* CSVService.swift */,
 			);
 			path = BPMRVDetector;
 			sourceTree = "<group>";
@@ -139,6 +142,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DCEC5B422158AF600E494CF /* CSVService.swift in Sources */,
 				3D7136131F7E1A170061EE94 /* ViewController.swift in Sources */,
 				3D7136231F7E2BFA0061EE94 /* BpmDetectService.swift in Sources */,
 				3D7136111F7E1A170061EE94 /* AppDelegate.swift in Sources */,
