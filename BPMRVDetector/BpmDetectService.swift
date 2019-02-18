@@ -13,11 +13,11 @@ import AudioToolbox
 import MediaPlayer
 import OpenAL
 
-class BpmDetectService {
+class BpmDetectService: NSObject {
     
     fileprivate let PI: Float = 3.14159265
     var matchData = "BPM, Match"
-
+    
     /* メモリ解放用 */
     fileprivate func MyFreeOpenALAudioData(_ data: UnsafeMutablePointer<Int16>, _ dataSize: ALsizei) {
         let theData = UnsafeMutablePointer<Int16>?(data)
@@ -64,7 +64,7 @@ class BpmDetectService {
     fileprivate func getBestMatchedBpmAndRV(_ diff: [Float], rate: Int, frameSize: Int) -> (bpm: Int, rv:Float)  {
         // マッチ度を算出するBPMの範囲を定義
         let lowerBpm = 60
-        let upperBpm = 300
+        let upperBpm = 240
         
         var bpms: [Float] = Array(repeating: 0.0, count: upperBpm - lowerBpm + 1)
         var bpmValue = 0
@@ -85,20 +85,20 @@ class BpmDetectService {
         let rv = getRV(bpms: bpms, bpmMatchMax: bpmMatch)
         
         // BPM80未満の場合はBPMを倍にする (ランニングやウォーキングでBPM80未満にはならいないため)
-        if (bpmValue < 80) {
-            bpmValue *= 2
-            // BPMをより正確にするために補正する
-            let index = bpmValue-lowerBpm
-            if (bpms[index] < bpms[index - 1]) {
-                bpmValue = bpmValue - 1
-            } else if (bpms[index] < bpms[index + 1]) {
-                bpmValue = bpmValue + 1
-            }
-        }
+        //        if (bpmValue < 80) {
+        //            bpmValue *= 2
+        //            // BPMをより正確にするために補正する
+        //            let index = bpmValue-lowerBpm
+        //            if (bpms[index] < bpms[index - 1]) {
+        //                bpmValue = bpmValue - 1
+        //            } else if (bpms[index] < bpms[index + 1]) {
+        //                bpmValue = bpmValue + 1
+        //            }
+        //        }
         // BPM201以上の場合はBPMを半分にする
-        if (bpmValue > 200) {
-            bpmValue = Int(round(Float(bpmValue) / 2.0)) // round:四捨五入
-        }
+        //        if (bpmValue > 200) {
+        //            bpmValue = Int(round(Float(bpmValue) / 2.0)) // round:四捨五入
+        //        }
         // print("result bpm:\(bpmValue)")
         return (bpmValue, rv)
     }
@@ -132,7 +132,7 @@ class BpmDetectService {
     
     /* 楽曲情報を解析しBPMとRVを返す */
     func detectSong(url: URL) -> (bpm: Int, rv: Float) {
-        print("StartPrepareBpmAnalyze")
+        print("Prepareing BPM Analyze...")
         var err: OSStatus = noErr
         var theFileLengthInFrames: Int64 = 0
         var theFileFormat: AudioStreamBasicDescription = AudioStreamBasicDescription()
@@ -171,7 +171,7 @@ class BpmDetectService {
         theOutputFormat.mFormatFlags = kAudioFormatFlagsNativeEndian | kAudioFormatFlagIsPacked | kAudioFormatFlagIsSignedInteger
         
         // 指定した形式へ変換
-        print("StartConvertToLinearPCM")
+        print("Converting MusicData to LinearPCM...")
         err = ExtAudioFileSetProperty(extRef, kExtAudioFileProperty_ClientDataFormat, UInt32(MemoryLayout.stride(ofValue: theOutputFormat)), &theOutputFormat)
         if err != 0 { print("MyGetOpenALAudioData: ExtAudioFileSetProperty(kExtAudioFileProperty_ClientDataFormat) FAILED, Error = \(err)");}
         
@@ -200,9 +200,9 @@ class BpmDetectService {
                 // ポインタから配列へ格納
                 let src: UnsafeMutablePointer<Int16> = UnsafeMutablePointer<Int16>(theData!)
                 let soundArray = Array(UnsafeBufferPointer(start: src, count: Int(theFileLengthInFrames)))
-                print("CompleteConvertToLinearPCM")
+                // print("Complete ConvertToLinearPCM")
                 // printDebugAudioInfo(dataSize, outSampleRate, arraysize.count) // デバッグ用
-                print("StartBpmAnalyze")
+                print("Analyzing BPM/RV...")
                 // BPM算出に用いるパラメータの準備
                 let rate = Int(outSampleRate)
                 let frameSize = 512
@@ -214,13 +214,13 @@ class BpmDetectService {
                 let detectedValue = getBestMatchedBpmAndRV(diffList, rate: rate, frameSize: frameSize)
                 
                 // Match度の保存
-                let formatter = DateFormatter()
-                formatter.dateFormat = "yyyyMMdd_HHmmss"
-                let csvFile = formatter.string(from: Date()) + ".csv"
-                saveCSV(fileName: csvFile)
+                //                let formatter = DateFormatter()
+                //                formatter.dateFormat = "yyyyMMdd_HHmmss"
+                //                let csvFile = formatter.string(from: Date()) + ".csv"
+                //                saveCSV(fileName: csvFile)
                 
                 MyFreeOpenALAudioData(theData!, outDataSize) // メモリ解放
-                print("CompleteBpmAnalyze")
+                print("Complete")
                 return (detectedValue.bpm, detectedValue.rv)
             } else {
                 // 失敗した場合
@@ -238,21 +238,21 @@ class BpmDetectService {
         print("arraysize:\(count)")
     }
     
-    func saveCSV(fileName: String) {
-        if let documentDirectoryFileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last {
-            let targetTextFilePath = documentDirectoryFileURL.appendingPathComponent(fileName)
-            saveTextFile(fileURL: targetTextFilePath)
-        }
-    }
-    
-    func saveTextFile(fileURL: URL) {
-        do {
-            let stringToWrite = matchData
-            try stringToWrite.write(to: fileURL, atomically: true, encoding: String.Encoding.utf8)
-        } catch let error {
-            print("failed to append: \(error)")
-        }
-    }
+//    func saveCSV(fileName: String) {
+//        if let documentDirectoryFileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last {
+//            let targetTextFilePath = documentDirectoryFileURL.appendingPathComponent(fileName)
+//            saveTextFile(fileURL: targetTextFilePath)
+//        }
+//    }
+//
+//    func saveTextFile(fileURL: URL) {
+//        do {
+//            let stringToWrite = matchData
+//            try stringToWrite.write(to: fileURL, atomically: true, encoding: String.Encoding.utf8)
+//        } catch let error {
+//            print("failed to append: \(error)")
+//        }
+//    }
     
 }
 

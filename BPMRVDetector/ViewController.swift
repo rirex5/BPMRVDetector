@@ -31,36 +31,39 @@ class ViewController: UIViewController, MPMediaPickerControllerDelegate {
     }
     
     func initialize() {
-        csvData = "Name, Artist, Album, Genre, Time, BPM, RV"
+        csvData = "Id, Name, Artist, Album, Genre, Time, BPM, RV"
         let query = MPMediaQuery.songs()
         
         let items = query.items!
         // 非同期処理内の一部のみ同期処理にする
         DispatchQueue.global(qos: .default).async {
             
-            var i = 0
-            for item in items {
-                if let url: URL = item.assetURL {
-                    let result = self.bpmDetector(url: url)
-                    
-                    let data = "\n\(item.title ?? ""),\(item.artist ?? ""),\(item.albumTitle ?? ""),\(item.genre ?? ""),\(item.playbackDuration),\(result.bpm),\(result.rv)"
-                    self.csvData += data
-                    print(data)
-                    DispatchQueue.main.async {
-                        self.songNameLabel.text = item.title
-                        self.bpmLabel.text = "BPM: \(result.bpm)"
-                        self.rvLabel.text = "RythmicValue: \(result.rv)"
-                        self.progressLabel.text = "Progress: " + String(i)
+            for i in 0..<items.count {
+                
+                if (700 <= i && i < items.count) {
+                    let item = items[i]
+                    if let url: URL = item.assetURL {
+                        print("Title: \(item.title ?? "item")")
+                        
+                        let result = self.bpmDetector(url: url)
+                        
+                        let data = "\n\(i),\(item.title ?? ""),\(item.artist ?? ""),\(item.albumTitle ?? ""),\(item.genre ?? ""),\(item.playbackDuration),\(result.bpm),\(result.rv)"
+                        self.csvData += data
+                        print(data)
+                        DispatchQueue.main.async {
+                            self.songNameLabel.text = item.title
+                            self.bpmLabel.text = "BPM: \(result.bpm)"
+                            self.rvLabel.text = "RythmicValue: \(result.rv)"
+                            self.progressLabel.text = "Progress: " + String(i)
+                        }
                     }
                 }
-                i += 1
             }
             self.csvService.saveCSV(dataStr: self.csvData)
             DispatchQueue.main.async {
                 self.progressLabel.text = "Progress: Complete!"
             }
         }
-        
     }
     
     /**
